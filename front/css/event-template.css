@@ -1,0 +1,12 @@
+.preview {
+    padding: 20px 0;
+}
+
+.meta_event .date * {
+    font-size: 18px !important;
+    color: #000 !important;
+}
+
+.events .entry-header {
+    margin-bottom: 10px;
+}
