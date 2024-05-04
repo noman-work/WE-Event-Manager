@@ -18,21 +18,30 @@ class EventSubmissionForm
 
         // Output the event submission form
 ?>
-        <form method="post" action="" enctype="multipart/form-data">
+        <form method="post" action="" id="event_sub" enctype="multipart/form-data">
+            <h1>Submit Your Event</h1>
             <label for="event_title">Event Title:</label>
             <input type="text" id="event_title" name="event_title" required><br>
 
             <label for="event_content">Event Description:</label>
             <textarea id="event_content" name="event_content" required></textarea><br>
 
-            <label for="event_date">Event Date:</label>
-            <input type="date" id="event_date" name="event_date" required><br>
+            <div class="wrap_time">
+                <div class="form-control"><label for="event_date">Event Date:</label>
+                    <input type="date" id="event_date" name="event_date" required>
+                </div>
 
-            <label for="event_start_time">Event Start Time:</label>
-            <input type="time" id="event_start_time" name="event_start_time" required><br>
 
-            <label for="event_end_time">Event End Time:</label>
-            <input type="time" id="event_end_time" name="event_end_time" required><br>
+                <div class="form-control"><label for="event_start_time">Event Start Time:</label>
+                    <input type="time" id="event_start_time" name="event_start_time" required>
+                </div>
+
+
+                <div class="form-control"><label for="event_end_time">Event End Time:</label>
+                    <input type="time" id="event_end_time" name="event_end_time" required>
+                </div>
+
+            </div>
 
             <label for="event_image">Event Image:</label>
             <input type="file" id="event_image" name="event_image"><br>
@@ -84,9 +93,9 @@ class EventSubmissionForm
 
                         set_post_thumbnail($new_event_id, $uploaded_image);
 
-                        echo '<p>' . esc_html__('Event submitted successfully. It will be reviewed by an admin.', 'text-domain') . '</p>';
+                        echo '<p class="message-event">' . esc_html__('Event submitted successfully. It will be reviewed by an admin.', 'text-domain') . '</p>';
                     } else {
-                        echo '<p>' . esc_html__('Failed to submit event. Please try again.', 'text-domain') . '</p>';
+                        echo '<p class="message-event">' . esc_html__('Failed to submit event. Please try again.', 'text-domain') . '</p>';
                     }
                 }
             }

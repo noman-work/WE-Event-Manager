@@ -10,3 +10,75 @@
 .events .entry-header {
     margin-bottom: 10px;
 }
+#event_sub h1 {
+    font-size: 26px !important;
+}
+.wrap_time {
+    display: flex;
+    justify-content: space-between;
+}
+.wrap_time .form-control {
+    display: flex;
+    flex-direction: column;
+    padding: 1px;
+}
+.wrap_time .form-control input {
+    padding: 10px;
+    color: #000;
+    font-size: 16px !important;
+    border: 2px solid #e8e8e8;
+    background: #f6f6f6;
+}
+#event_sub input {
+    padding: 10px;
+    color: #000;
+    font-size: 16px !important;
+    border: 2px solid #e8e8e8;
+    background: #f6f6f6;
+	width: 100%;
+}
+
+#event_sub textarea {
+	    font-size: 16px !important;
+    border: 2px solid #e8e8e8;
+	background: #f6f6f6;
+    width: 100%;
+    height: 100px;
+    padding: 10px 0;
+    box-sizing: border-box;
+    border-radius: 4px;
+    color: purple;
+}
+#event_sub input[type="submit"] {
+    background-color: purple;
+    width: 180px;
+    display: block;
+    margin: 0px auto;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 18px;
+    color: white;
+    margin-top: 30px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#event_sub input[type="submit"]:hover {
+    background-color: indigo;
+}
+form#event_sub {
+    max-width: 700px;
+    margin: 0 auto;
+}
+p.message-event {
+    background: #eee;
+    color: #000;
+    font-size: 18px;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 5px 12px;
+    border-left: 3px solid #000;
+    margin-bottom: 20px;
+}
