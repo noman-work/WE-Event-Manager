@@ -1,5 +1,5 @@
 <?php
-class Event_Metadata_Handler
+class EventMetadataHandler
 {
     public function __construct()
     {

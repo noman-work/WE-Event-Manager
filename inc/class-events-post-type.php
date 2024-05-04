@@ -1,6 +1,6 @@
 <?php
 require_once EVENT_SITES_DIR . 'inc/class-events-admin-columns.php';
-class Events_Post_Type
+class EventsPostType
 {
     public function __construct()
     {

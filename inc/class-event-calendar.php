@@ -1,5 +1,5 @@
 <?php
-class EventCalendarAdmin
+class EventCalendar
 {
     public function __construct()
     {
@@ -9,6 +9,11 @@ class EventCalendarAdmin
         // AJAX handler to load event calendar
         add_action('wp_ajax_load_event_calendar', array($this, 'load_event_calendar'));
         add_action('wp_ajax_nopriv_load_event_calendar', array($this, 'load_event_calendar'));
+
+        // Shortcode to display event calendar on the frontend
+        add_shortcode('event_calendar', array($this, 'event_calendar_shortcode'));
+
+        add_action('wp_enqueue_scripts', array($this, 'style_script_event_calendar'));
     }
 
     /**
@@ -40,6 +45,33 @@ class EventCalendarAdmin
             ?>
         </div>
 <?php
+    }
+
+    /**
+     * Shortcode callback to display event calendar on the frontend.
+     */
+    public function event_calendar_shortcode($atts)
+    {
+        ob_start();
+        $this->display_event_calendar();
+        return ob_get_clean();
+    }
+
+    /**
+     * Style for the Front end Shortcode
+     */
+    public function style_script_event_calendar()
+    {
+        wp_enqueue_style('wwm_front_calendar_style', plugin_dir_url(__FILE__) . 'front/css/calendar.css');
+
+        wp_enqueue_script('admin-calendar-script', plugin_dir_url(__FILE__) . 'front/js/calendar.js', array('jquery'), '1.0', true);
+
+        // Pass PHP variables to JavaScript
+        wp_localize_script('admin-calendar-script', 'calendar_ajax_object', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'current_month' => date('n'),
+            'current_year' => date('Y')
+        ));
     }
 
     /**
@@ -90,6 +122,7 @@ class EventCalendarAdmin
      */
     public function generate_calendar($month, $year, $events)
     {
+
         // Use WordPress functions to generate calendar HTML
         $calendar_html = '<table id="calendar" class="event-calendar">';
         $calendar_html .= '<caption>' . date('F Y', strtotime("$year-$month-01")) . '</caption>';
@@ -100,13 +133,14 @@ class EventCalendarAdmin
 
         // Define weekdays row
         $calendar_html .= '<tr class="weekdays">
-        <th scope="col">Sunday</th>
+       
         <th scope="col">Monday</th>
         <th scope="col">Tuesday</th>
         <th scope="col">Wednesday</th>
         <th scope="col">Thursday</th>
         <th scope="col">Friday</th>
         <th scope="col">Saturday</th>
+        <th scope="col">Sunday</th>
     </tr>';
         $calendar_html .= '<tbody>';
 
@@ -126,7 +160,7 @@ class EventCalendarAdmin
             // Loop through each day of the week
             for ($j = 0; $j < 7; $j++) {
                 if (($i === 0 && $j < $first_day - 1) || $day_counter > $days_in_month) {
-                    $calendar_html .= '<td class="day other-month"></td>'; // Empty cell before the first day and after the last day
+                    $calendar_html .= '<td class="day other-month"></td>';
                 } else {
                     $current_date = sprintf('%04d-%02d-%02d', $year, $month, $day_counter);
                     $calendar_html .= '<td class="day"><div class="date">';
@@ -143,11 +177,11 @@ class EventCalendarAdmin
                             $event_start_time = get_post_meta($event->ID, 'event_start_time', true);
                             $event_end_time = get_post_meta($event->ID, 'event_end_time', true);
 
-                            $calendar_html .= '<div class="event-desc">';
+                            $calendar_html .= '<div class="event-desc"><a href="' . get_the_permalink($event) . '">';
                             $calendar_html .= '<strong>' . get_the_title($event) . '</strong><br>';
                             $calendar_html .= 'Start Time: ' . $event_start_time . '<br>';
                             $calendar_html .= 'End Time: ' . $event_end_time;
-                            $calendar_html .= '</div>';
+                            $calendar_html .= '</a></div>';
                         }
                         $calendar_html .= '</div>';
                     }
@@ -190,7 +224,7 @@ class EventCalendarAdmin
         $year = isset($_POST['year']) ? intval($_POST['year']) : date('Y');
 
         // Generate calendar HTML
-        $event_calendar = new EventCalendarAdmin();
+        $event_calendar = new EventCalendar();
         $calendar_html = $event_calendar->generate_calendar($month, $year, $event_calendar->get_events_for_month($month, $year));
 
         // Output calendar HTML
