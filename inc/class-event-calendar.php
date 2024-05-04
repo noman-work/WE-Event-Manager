@@ -12,8 +12,6 @@ class EventCalendar
 
         // Shortcode to display event calendar on the frontend
         add_shortcode('event_calendar', array($this, 'event_calendar_shortcode'));
-
-        add_action('wp_enqueue_scripts', array($this, 'style_script_event_calendar'));
     }
 
     /**
@@ -55,23 +53,6 @@ class EventCalendar
         ob_start();
         $this->display_event_calendar();
         return ob_get_clean();
-    }
-
-    /**
-     * Style for the Front end Shortcode
-     */
-    public function style_script_event_calendar()
-    {
-        wp_enqueue_style('wwm_front_calendar_style', plugin_dir_url(__FILE__) . 'front/css/calendar.css');
-
-        wp_enqueue_script('admin-calendar-script', plugin_dir_url(__FILE__) . 'front/js/calendar.js', array('jquery'), '1.0', true);
-
-        // Pass PHP variables to JavaScript
-        wp_localize_script('admin-calendar-script', 'calendar_ajax_object', array(
-            'ajax_url' => admin_url('admin-ajax.php'),
-            'current_month' => date('n'),
-            'current_year' => date('Y')
-        ));
     }
 
     /**
