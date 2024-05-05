@@ -15,6 +15,7 @@ class EventsPostType
         add_action('save_post', array($this, 'save_event_meta_data'));
 
         //add_filter('template_include', array($this, 'custom_plugin_single_event_template'));
+        add_filter('the_content', array($this, 'add_event_meta_to_content'));
     }
 
     /**
@@ -66,6 +67,38 @@ class EventsPostType
         return $template;
     }
 
+    // Add event meta data to the content
+    public function add_event_meta_to_content($content) {
+        if (is_singular('events')) {
+            $event_date = sanitize_text_field(get_post_meta(get_the_ID(), 'event_date', true));
+            $event_start_time = sanitize_text_field(get_post_meta(get_the_ID(), 'event_start_time', true));
+            $event_end_time = sanitize_text_field(get_post_meta(get_the_ID(), 'event_end_time', true));
+
+            $meta_html = '';
+
+            // Display event date
+            if (!empty($event_date)) {
+                $meta_html .= '<div class="meta_event">';
+                $meta_html .= '<div class="date">';
+                $meta_html .= '<p><strong>Event Date: </strong>' . $event_date;
+
+                // Display event time range if both start and end times are provided
+                if (!empty($event_start_time) && !empty($event_end_time)) {
+                    $formatted_start_time = date('g:i A', strtotime($event_start_time));
+                    $formatted_end_time = date('g:i A', strtotime($event_end_time));
+                    $meta_html .= ' <b>@</b> ' . $formatted_start_time . ' - ' . $formatted_end_time;
+                }
+
+                $meta_html .= '</p>';
+                $meta_html .= '</div>';
+                $meta_html .= '</div>';
+            }
+
+            $content = $meta_html . $content;
+        }
+
+        return $content;
+    }
 
     /**
      * Add meta boxes to handle event meta data.
