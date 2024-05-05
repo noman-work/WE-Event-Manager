@@ -14,7 +14,7 @@ class EventsPostType
 
         add_action('save_post', array($this, 'save_event_meta_data'));
 
-        add_filter('template_include', array($this, 'custom_plugin_single_event_template'));
+        //add_filter('template_include', array($this, 'custom_plugin_single_event_template'));
     }
 
     /**
