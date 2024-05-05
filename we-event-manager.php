@@ -52,8 +52,7 @@ if (class_exists('EventSubmissionForm')) {
  */
 function wem_event_manager_activate()
 {
-    global $wp_rewrite;
-    $wp_rewrite->flush_rules();
+    flush_rewrite_rules();
 }
 
 /**
